@@ -12,6 +12,7 @@
 */
 
 Route::get('/', function () {
+	//dd(bcrypt('secretadmin'));
     return redirect()->route('login');
 });
 

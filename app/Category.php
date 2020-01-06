@@ -12,9 +12,4 @@ class Category extends Model
     {
     	return $this->belongsTo('App\User');
     }
-
-    public function billpays()
-    {
-        return $this->hasMany('App\BillPay');
-    }
 }

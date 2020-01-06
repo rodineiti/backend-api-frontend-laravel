@@ -98,10 +98,7 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $category = auth()->user()->categories()->findOrFail($id);
-
-        $category->billpays()->delete();
-
+        $category = auth()->user()->categories()->findOrFail($id);        
         $category->delete();
 
         Session::flash('success', 'Categoria deletada com sucesso');

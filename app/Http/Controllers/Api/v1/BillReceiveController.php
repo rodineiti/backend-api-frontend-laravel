@@ -44,7 +44,7 @@ class BillReceiveController extends Controller
         $validator = \Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
-           return response()->json(['status' => 'error', 'errors' => $validator->errors()]);
+           return response()->json(['status' => 'error', 'errors' => $validator->errors()], 422);
         }
 
         $user = $this->model->where('id', $request->user()->id)->first();
@@ -90,7 +90,7 @@ class BillReceiveController extends Controller
         $validator = \Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
-           return response()->json(['status' => 'error', 'errors' => $validator->errors()]);
+           return response()->json(['status' => 'error', 'errors' => $validator->errors()], 422);
         }
         
         if (!$id) {
@@ -134,6 +134,6 @@ class BillReceiveController extends Controller
 
         $bill_receive->delete();
 
-        return response()->json(['status' => 'success', 'message' => 'Conta a receber deletada com sucesso.']);
+        return response()->json(['status' => 'success', 'message' => 'Conta a receber deletada com sucesso.'], 204);
     }
 }

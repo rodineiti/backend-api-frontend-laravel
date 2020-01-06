@@ -42,7 +42,7 @@ class CategoryController extends Controller
         $validator = \Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
-           return response()->json(['status' => 'error', 'errors' => $validator->errors()]);
+           return response()->json(['status' => 'error', 'errors' => $validator->errors()], 422);
         }
 
         $user = $this->model->where('id', $request->user()->id)->first();
@@ -86,7 +86,7 @@ class CategoryController extends Controller
         $validator = \Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
-           return response()->json(['status' => 'error', 'errors' => $validator->errors()]);
+           return response()->json(['status' => 'error', 'errors' => $validator->errors()], 422);
         }
         
         if (!$id) {
@@ -128,10 +128,8 @@ class CategoryController extends Controller
             return response()->json(['status' => 'error', 'message' => 'Opss. Categoria não encontrada pra este usuário.']);
         }
 
-        $category->billpays()->delete();
-        
         $category->delete();
 
-        return response()->json(['status' => 'success', 'message' => 'Categoria deletada com sucesso.']);
+        return response()->json(['status' => 'success', 'message' => 'Categoria deletada com sucesso.'], 204);
     }
 }

@@ -31,6 +31,7 @@ class RegisterController extends Controller
 		$user->name = $data['name'];
 		$user->email = $data['email'];
 		$user->password = bcrypt($data['password']);
+    $user->image = '/profiles/default.png';
 		$user->save();
 
 		return response()->json(['status' => 'success', 'message' => 'Conta criada com sucesso, faça o login.']);

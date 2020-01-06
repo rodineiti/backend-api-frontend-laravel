@@ -103,4 +103,30 @@ class ReportController extends Controller
 
         return response()->json(['status' => 'success', 'data' => $categories]);
     }
+  
+    public function sumChartsByPeriodFull(Request $request)
+    {
+        $user = $this->model->where('id', $request->user()->id)->first();
+
+        if (!$user) {
+            return response()->json(['status' => 'error', 'message' => 'Opss. Usuário não foi encontrado, favor verifique se esta logado.']);
+        }
+
+        $dateStart = date('Y') . '-01-01';
+        $dateEnd = date('Y-m-d');
+
+        $categories = $user->categories()->selectRaw('categories.name, sum(value) as value')
+            ->leftJoin('bill_pays', 'bill_pays.category_id', '=', 'categories.id')
+            ->whereBetween('date_launch', [$dateStart, $dateEnd])
+            ->whereNotNull('bill_pays.category_id')
+            ->groupBy('categories.name')
+            ->get();
+
+        foreach ($categories as $key => $value) {
+            $categories[$key]['name'] = $value->name;
+            $categories[$key]['y'] = (float)$value->value;
+        }
+
+        return response()->json(['status' => 'success', 'data' => $categories]);
+    }
 }

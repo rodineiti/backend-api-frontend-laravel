@@ -24,8 +24,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $dateStart = date('Y') . '-01-01';
-        $dateEnd = date('Y-m-d');
+        $dateStart = date('Y-m-d', mktime(0, 0, 0, date('m') , 1 , date('Y')));
+        $dateEnd = date('Y-m-d', mktime(23, 59, 59, date('m'), date("t"), date('Y')));
 
         $billPays = auth()->user()->bill_pays()->selectRaw('bill_pays.*, categories.name as category_name')
             ->leftJoin('categories', 'categories.id', '=', 'bill_pays.category_id')

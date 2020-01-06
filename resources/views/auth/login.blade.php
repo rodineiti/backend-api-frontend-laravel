@@ -4,7 +4,7 @@
 <!-- START Login Right Container-->
 <div class="login-container bg-white">
     <div class="p-l-50 m-l-20 p-r-50 m-r-20 p-t-50 m-t-30 sm-p-l-15 sm-p-r-15 sm-p-t-40">
-      <h1>Controle de finanças pessoal - Login</h1>
+      <img src="{{ asset('assets/img/logo.png') }}" alt="logo" data-src="{{ asset('assets/img/logo.png') }}" data-src-retina="{{ asset('assets/img/logo_2x.png') }}" width="78" height="22">
       <p class="p-t-35">Informe seus dados de acesso</p>
       <!-- START Login Form -->
       <form id="form-login" class="p-t-15" role="form" action="{{ route('login') }}" method="post">
@@ -13,7 +13,7 @@
         <div class="form-group form-group-default">
           <label>E-mail</label>
           <div class="controls">
-            <input type="text" name="email" placeholder="Email" class="form-control" value="{{ old('email') }}" required>            
+            <input type="text" name="email" placeholder="E-mail" class="form-control" value="{{ old('email') }}" required>            
           </div>          
         </div>
         @if ($errors->has('email'))
@@ -24,7 +24,7 @@
         <div class="form-group form-group-default">
           <label>Senha</label>
           <div class="controls">
-            <input type="password" class="form-control" name="password" placeholder="Credentials" required>
+            <input type="password" class="form-control" name="password" placeholder="senha" required>
           </div>
         </div>
         @if ($errors->has('password'))
@@ -48,7 +48,7 @@
           </div>
         </div>
         <!-- END Form Control-->
-        <button class="btn btn-primary btn-cons m-t-10" type="submit">Entrar</button>
+        <button class="btn btn-primary btn-cons m-t-10" type="submit">Login</button>
       </form>      
       
     </div>

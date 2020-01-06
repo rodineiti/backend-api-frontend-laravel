@@ -45,7 +45,7 @@ class BillPayController extends Controller
         $validator = \Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
-           return response()->json(['status' => 'error', 'errors' => $validator->errors()]);
+           return response()->json(['status' => 'error', 'errors' => $validator->errors()], 422);
         }
 
         $user = $this->model->where('id', $request->user()->id)->first();
@@ -92,7 +92,7 @@ class BillPayController extends Controller
         $validator = \Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
-           return response()->json(['status' => 'error', 'errors' => $validator->errors()]);
+           return response()->json(['status' => 'error', 'errors' => $validator->errors()], 422);
         }
 
         if (!$id) {
@@ -136,6 +136,6 @@ class BillPayController extends Controller
 
         $bill_pay->delete();
 
-        return response()->json(['status' => 'success', 'message' => 'Conta a pagar deletada com sucesso.']);
+        return response()->json(['status' => 'success', 'message' => 'Conta a pagar deletada com sucesso.'], 204);
     }
 }

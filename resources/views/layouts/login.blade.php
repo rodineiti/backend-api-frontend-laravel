@@ -49,7 +49,7 @@
         <!-- START Background Caption-->
         <div class="bg-caption pull-bottom sm-pull-bottom text-white p-l-20 m-b-20">
           <h2 class="semi-bold text-white">
-                    RDN</h2>
+                    Gestão Finanças</h2>
         </div>
         <!-- END Background Caption-->
       </div>
