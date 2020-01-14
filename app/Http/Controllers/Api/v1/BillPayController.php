@@ -136,6 +136,6 @@ class BillPayController extends Controller
 
         $bill_pay->delete();
 
-        return response()->json(['status' => 'success', 'message' => 'Conta a pagar deletada com sucesso.'], 204);
+        return response()->json(['status' => 'success', 'message' => 'Conta a pagar deletada com sucesso.']);
     }
 }

@@ -134,6 +134,6 @@ class BillReceiveController extends Controller
 
         $bill_receive->delete();
 
-        return response()->json(['status' => 'success', 'message' => 'Conta a receber deletada com sucesso.'], 204);
+        return response()->json(['status' => 'success', 'message' => 'Conta a receber deletada com sucesso.']);
     }
 }
