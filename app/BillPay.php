@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class BillPay extends Model
 {
-	protected $fillable = ['date_launch','name','value','category_id'];
+	protected $fillable = ['date_launch','name','value','status','category_id'];
+
+	protected $casts = ['status' => 'boolean'];
 
     public function category()
     {

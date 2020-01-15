@@ -86,7 +86,41 @@ class BillPayController extends Controller
             'category_id' => 'required',
             'date_launch' => 'required|date',
             'name' => 'required|min:3|max:255',
-            'value' => 'required|numeric'
+            'value' => 'required|numeric',
+            'status' => 'required'
+        ];
+
+        $validator = \Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+           return response()->json(['status' => 'error', 'errors' => $validator->errors()], 422);
+        }
+
+        if (!$id) {
+           return response()->json(['status' => 'error', 'message' => 'Conta a pagar não informada']);
+        }
+
+        $user = $this->model->where('id', $request->user()->id)->first();
+
+        if (!$user) {
+            return response()->json(['status' => 'error', 'message' => 'Opss. Usuário não foi encontrado, favor verifique se esta logado.']);
+        }
+        
+        $bill_pay = $user->bill_pays()->find($id);
+
+        if (!$bill_pay) {
+            return response()->json(['status' => 'error', 'message' => 'Opss. Conta a pagar não encontrada pra este usuário.']);
+        }
+
+        $bill_pay->update($request->all());
+
+        return response()->json(['status' => 'success', 'message' => 'Conta a pagar atualizada com sucesso.']);
+    }
+
+    public function toggle(Request $request, $id)
+    {
+        $rules = [
+            'status' => 'required'
         ];
 
         $validator = \Validator::make($request->all(), $rules);

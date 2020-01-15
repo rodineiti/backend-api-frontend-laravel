@@ -29,12 +29,14 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api\v1', 'middleware' => ['auth:
 	Route::get('bill_pays/show/{id}', 'BillPayController@show');
 	Route::post('bill_pays/store', 'BillPayController@store');
 	Route::put('bill_pays/update/{id}', 'BillPayController@update');
+	Route::put('bill_pays/toggle/{id}', 'BillPayController@toggle');
 	Route::delete('bill_pays/destroy/{id}', 'BillPayController@destroy');
 
 	Route::get('bill_receives', 'BillReceiveController@index');
 	Route::get('bill_receives/show/{id}', 'BillReceiveController@show');
 	Route::post('bill_receives/store', 'BillReceiveController@store');
 	Route::put('bill_receives/update/{id}', 'BillReceiveController@update');
+	Route::put('bill_receives/toggle/{id}', 'BillReceiveController@toggle');
 	Route::delete('bill_receives/destroy/{id}', 'BillReceiveController@destroy');
   
   Route::get('chartsfull', 'ReportController@sumChartsByPeriodFull');

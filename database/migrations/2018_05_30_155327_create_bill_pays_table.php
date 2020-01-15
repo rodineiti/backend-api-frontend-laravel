@@ -22,6 +22,7 @@ class CreateBillPaysTable extends Migration
             $table->date('date_launch');
             $table->string('name');
             $table->decimal('value');
+            $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });
     }
