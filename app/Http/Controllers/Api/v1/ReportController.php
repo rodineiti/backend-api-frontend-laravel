@@ -42,15 +42,18 @@ class ReportController extends Controller
 
         $dateStart = $request->dateStart;
         $dateEnd = $request->dateEnd;
+        $status = $request->status ? ['status' => $request->status] : [];
 
         $billPays = $user->bill_pays()->selectRaw('bill_pays.*, categories.name as category_name')
             ->leftJoin('categories', 'categories.id', '=', 'bill_pays.category_id')
             ->whereBetween('date_launch', [$dateStart, $dateEnd])
             ->orderBy('date_launch', 'DESC')
+            ->where($status)
             ->get();
 
         $billReceives = $user->bill_receives()->whereBetween('date_launch', [$dateStart, $dateEnd])
             ->orderBy('date_launch', 'DESC')
+            ->where($status)
             ->get();
 
         $collection = new Collection(array_merge_recursive($billPays->toArray(), $billReceives->toArray()));
@@ -94,6 +97,7 @@ class ReportController extends Controller
             ->whereBetween('date_launch', [$dateStart, $dateEnd])
             ->whereNotNull('bill_pays.category_id')
             ->groupBy('categories.name')
+            ->where('status', '1')
             ->get();
 
         foreach ($categories as $key => $value) {
