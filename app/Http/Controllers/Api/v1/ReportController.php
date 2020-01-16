@@ -42,10 +42,14 @@ class ReportController extends Controller
 
         $dateStart = $request->dateStart;
         $dateEnd = $request->dateEnd;
-        $status = $request->status ? ['status' => $request->status] : [];
+        $status = ($request->status !== null && $request->status !== false && $request->status !== '')
+                    ?
+                    ['status' => $request->status]
+                    :
+                    [];
 
         $billPays = $user->bill_pays()->selectRaw('bill_pays.*, categories.name as category_name')
-            ->leftJoin('categories', 'categories.id', '=', 'bill_pays.category_id')
+            ->join('categories', 'categories.id', '=', 'bill_pays.category_id')
             ->whereBetween('date_launch', [$dateStart, $dateEnd])
             ->orderBy('date_launch', 'DESC')
             ->where($status)
