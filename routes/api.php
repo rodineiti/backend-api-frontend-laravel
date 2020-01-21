@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
  */
 Route::group(['prefix' => 'v1', 'namespace' => 'Api\v1'], function () {	
 	Route::post('auth/register', 'Auth\RegisterController@register');
+	Route::get('auth/register/confirmation/{token}', 'Auth\RegisterController@confirmation');
+
+	Route::post('auth/password/forget', 'Auth\PasswordResetController@forget');
+	Route::get('auth/password/reset/{token}', 'Auth\PasswordResetController@showReset');
+	Route::post('auth/password/reset', 'Auth\PasswordResetController@reset');
 });
 
 /*
@@ -17,7 +22,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api\v1', 'middleware' => ['auth:
 	Route::get('profile', 'AuthController@profile');
 	Route::get('logout', 'Auth\LoginController@logout');
   
-  Route::put('profile/update', 'AuthController@profileUpdate');
+  	Route::put('profile/update', 'AuthController@profileUpdate');
 	
 	Route::get('categories', 'CategoryController@index');
 	Route::get('categories/show/{id}', 'CategoryController@show');
@@ -39,24 +44,24 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api\v1', 'middleware' => ['auth:
 	Route::put('bill_receives/toggle/{id}', 'BillReceiveController@toggle');
 	Route::delete('bill_receives/destroy/{id}', 'BillReceiveController@destroy');
   
-  Route::get('chartsfull', 'ReportController@sumChartsByPeriodFull');
+  	Route::get('chartsfull', 'ReportController@sumChartsByPeriodFull');
 	Route::post('charts', 'ReportController@sumChartsByPeriod');
 	Route::post('statement', 'ReportController@getStatementByPeriod');
   
-  Route::get('contents', 'ContentController@index');
+  	Route::get('contents', 'ContentController@index');
 	Route::get('contents/show/{id}', 'ContentController@show');
-  Route::get('contents/page/list/{id}', 'ContentController@page');
-  Route::get('contents/list/friends', 'ContentController@friends');
-  Route::get('contents/list/friendspage/{id}', 'ContentController@friendspage');
+  	Route::get('contents/page/list/{id}', 'ContentController@page');
+  	Route::get('contents/list/friends', 'ContentController@friends');
+  	Route::get('contents/list/friendspage/{id}', 'ContentController@friendspage');
   
 	Route::post('contents/store', 'ContentController@store');
-  Route::post('contents/user/friend', 'ContentController@friend');
+  	Route::post('contents/user/friend', 'ContentController@friend');
   
 	Route::put('contents/update/{id}', 'ContentController@update');  
-  Route::put('contents/like/{id}', 'ContentController@like');
-  Route::put('contents/like/page/{id}', 'ContentController@likePage');
-  Route::put('contents/comment/{id}', 'ContentController@comment');
-  Route::put('contents/comment/page/{id}', 'ContentController@commentPage');
+  	Route::put('contents/like/{id}', 'ContentController@like');
+  	Route::put('contents/like/page/{id}', 'ContentController@likePage');
+  	Route::put('contents/comment/{id}', 'ContentController@comment');
+  	Route::put('contents/comment/page/{id}', 'ContentController@commentPage');
   
 	Route::delete('contents/destroy/{id}', 'ContentController@destroy');
 });

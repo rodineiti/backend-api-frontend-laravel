@@ -14,12 +14,13 @@
         </div>
     @endif
     <form id="form-password" class="p-t-15" role="form" action="{{ route('password.request') }}" method="post">
-        {{ csrf_field() }}
+      {{ csrf_field() }}
+        <input type="hidden" name="token" value="{{ $token }}">
       <div class="row">
         <div class="col-sm-12">
           <div class="form-group form-group-default">
             <label>E-mail</label>
-            <input type="email" name="email" placeholder="We will send loging details to you" class="form-control" required>
+            <input type="email" name="email" placeholder="Seu e-mail" class="form-control" required>
           </div>
           @if ($errors->has('email'))
                 <label id="position-error" class="error" for="position">{{ $errors->first('email') }}</label>
@@ -30,7 +31,7 @@
         <div class="col-sm-12">
           <div class="form-group form-group-default">
             <label>Nova Senha</label>
-            <input type="password" name="password" placeholder="Minimum of 6 Charactors" class="form-control" required>
+            <input type="password" name="password" placeholder="Mínimo 6 caracteres" class="form-control" required>
           </div>
             @if ($errors->has('password'))
                 <label id="position-error" class="error" for="position">{{ $errors->first('password') }}</label>
@@ -41,7 +42,7 @@
         <div class="col-sm-12">
           <div class="form-group form-group-default">
             <label>Confirmar Nova Senha</label>
-            <input type="password" name="password_confirmation" placeholder="Minimum of 6 Charactors" class="form-control" required>
+            <input type="password" name="password_confirmation" placeholder="Mínimo 6 caracteres" class="form-control" required>
           </div>
         </div>
       </div>

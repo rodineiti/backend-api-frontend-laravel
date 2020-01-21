@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'image'
+        'name', 'email', 'password', 'image', 'status', 'token'
     ];
 
     /**
@@ -121,5 +121,10 @@ class User extends Authenticatable
     public function getImageAttribute($value)
     {
       return asset($value);
+    }
+
+    public function findForPassport($username)
+    {
+        return $this->where('email', $username)->where('status', 1)->first();
     }
 }

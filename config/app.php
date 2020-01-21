@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => 'RDN Finance - Sistema de Gestão Financeira Pessoal',
 
     /*
     |--------------------------------------------------------------------------
@@ -52,6 +52,7 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
+    'url_frontend_react' => 'https://trusting-ramanujan-56f725.netlify.com',
 
     /*
     |--------------------------------------------------------------------------
@@ -178,6 +179,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\ObserverServiceProvider::class,
 
     ],
 

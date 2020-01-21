@@ -116,4 +116,23 @@ class UsersController extends Controller
 
         return redirect()->back();
     }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function toggle(Request $request)
+    {
+        $this->validate($request, [
+            "id" => "exists:users,id"
+        ]);
+
+        $user = $this->user->whereNotIn('id', [auth()->user()->id, 1])->findOrFail($request->id);
+        $user->update(['status' => !$user->status]);
+                
+        return response()->json(['status' => 'success', 'message' => 'Usuário atualizado com sucesso']);
+    }
 }

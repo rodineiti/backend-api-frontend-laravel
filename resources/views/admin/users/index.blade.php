@@ -41,6 +41,7 @@
             <tr>
               <th>Nome</th>
               <th>E-mail</th>
+              <th>Status</th>
               <th>Data Cadastro</th>
               <th>Editar</th>
               <th>Deletar</th>
@@ -55,6 +56,9 @@
                   </td>
                   <td class="v-align-middle">
                     <p>{{$user->email}}</p>
+                  </td>
+                  <td class="v-align-middle">
+                    <input type="checkbox" data-init-plugin="switchery" data-id="{{ $user->id }}" data-size="small" data-color="primary" {{$user->status === '1' ? "checked='checked'" : "" }} />
                   </td>
                   <td class="v-align-middle">
                     <p>{{$user->created_at}}</p>
@@ -84,4 +88,35 @@
   <!-- END CONTAINER FLUID -->
 </div>
 <!-- END PAGE CONTENT -->
+@endsection
+
+@section('scripts')
+<script>
+$(function(){
+  $("#tableWithDynamicRows").on("change", "input[type=checkbox]", function() {
+    var id = $(this).data("id");
+
+    if (id) {
+      $.ajax({
+        url: "{{ route('users.toggle') }}",
+        data: {"_token": "{{ csrf_token() }}", "id": id},
+        type: "post",
+        dataType: "json",
+        success: function (response) {
+          if (response.status === 'success') {
+            $('body').pgNotification({
+              style: 'bar',
+              message: response.message,
+              position: 'top',
+              timeout: 3000,
+              type: 'success'
+          }).show();
+          }
+        }
+      });
+    }
+    
+  });
+});
+</script>
 @endsection

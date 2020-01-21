@@ -16,6 +16,8 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+Route::get('/confirmation/{token}', 'Auth\RegisterController@confirmation')->name('confirmation');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
@@ -31,3 +33,4 @@ Route::resource('bill_receives', 'BillReceiveController', ['except' => ['show']]
 Route::resource('bill_pays', 'BillPayController', ['except' => ['show']]);
 
 Route::resource('users', 'UsersController', ['except' => ['show']]);
+Route::post('users/toggle', 'UsersController@toggle')->name('users.toggle');
