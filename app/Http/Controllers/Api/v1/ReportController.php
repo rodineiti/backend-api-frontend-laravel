@@ -55,13 +55,12 @@ class ReportController extends Controller
             ->where($status)
             ->get();
 
-        $billReceives = $user->bill_receives()->whereBetween('date_launch', [$dateStart, $dateEnd])
+        $billReceives = $user->bill_receives()->selectRaw('bill_receives.*, categories.name as category_name')
+            ->join('categories', 'categories.id', '=', 'bill_receives.category_id')
+            ->whereBetween('date_launch', [$dateStart, $dateEnd])
             ->orderBy('date_launch', 'DESC')
             ->where($status)
             ->get();
-
-        $collection = new Collection(array_merge_recursive($billPays->toArray(), $billReceives->toArray()));
-        $statements = $collection->sortByDesc('date_launch');
 
         $total_pays = $billPays->sum('value');
         $total_receives = $billReceives->sum('value');
@@ -96,7 +95,7 @@ class ReportController extends Controller
         $dateStart = $request->dateStart;
         $dateEnd = $request->dateEnd;
 
-        $categories = $user->categories()->selectRaw('categories.name, sum(value) as value')
+        $categoriesPay = $user->categories()->selectRaw('categories.name, sum(value) as value')
             ->leftJoin('bill_pays', 'bill_pays.category_id', '=', 'categories.id')
             ->whereBetween('date_launch', [$dateStart, $dateEnd])
             ->whereNotNull('bill_pays.category_id')
@@ -104,12 +103,28 @@ class ReportController extends Controller
             ->where('status', '1')
             ->get();
 
-        foreach ($categories as $key => $value) {
-            $categories[$key]['name'] = $value->name;
-            $categories[$key]['y'] = (float)$value->value;
+        $categoriesReceive = $user->categories()->selectRaw('categories.name, sum(value) as value')
+            ->leftJoin('bill_receives', 'bill_receives.category_id', '=', 'categories.id')
+            ->whereBetween('date_launch', [$dateStart, $dateEnd])
+            ->whereNotNull('bill_receives.category_id')
+            ->groupBy('categories.name')
+            ->where('status', '1')
+            ->get();
+
+        foreach ($categoriesPay as $key => $value) {
+            $categoriesPay[$key]['name'] = $value->name;
+            $categoriesPay[$key]['y'] = (float)$value->value;
         }
 
-        return response()->json(['status' => 'success', 'data' => $categories]);
+        foreach ($categoriesReceive as $key => $value) {
+            $categoriesReceive[$key]['name'] = $value->name;
+            $categoriesReceive[$key]['y'] = (float)$value->value;
+        }
+
+        $data["categoriesPay"] = $categoriesPay;
+        $data["categoriesReceive"] = $categoriesReceive;
+
+        return response()->json(['status' => 'success', 'data' => $data]);
     }
   
     public function sumChartsByPeriodFull(Request $request)

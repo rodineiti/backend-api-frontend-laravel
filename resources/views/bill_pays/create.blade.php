@@ -87,6 +87,21 @@
               @endif
           </div>
         </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group form-group-default">
+              <label>Status</label>
+              <select class="full-width" data-placeholder="Selecione a Status" data-init-plugin="select2" name="status" id="status" required>
+                <option value="">Selecione</option>
+                <option value="1">Pago</option>
+                <option value="0">Não Pago</option>
+              </select>
+            </div>
+            @if ($errors->has('status'))
+                  <label id="position-error" class="error" for="position">{{ $errors->first('status') }}</label>
+              @endif
+          </div>
+        </div>
 	      <button class="btn btn-primary btn-cons m-t-10" type="submit">Salvar</button>
 	    </form>
       </div>

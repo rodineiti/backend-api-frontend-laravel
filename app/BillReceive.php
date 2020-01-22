@@ -6,7 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class BillReceive extends Model
 {
-    protected $fillable = ['date_launch','name','value','status'];
+    protected $fillable = ['date_launch','name','value','status','category_id'];
 
     protected $casts = ['status' => 'boolean'];
+
+    public function category()
+    {
+    	return $this->belongsTo('App\Category');
+    }
 }

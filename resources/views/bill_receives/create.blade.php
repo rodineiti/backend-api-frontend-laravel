@@ -38,6 +38,22 @@
       <div class="panel-body">
         <form id="form-bill_receive" class="p-t-15" role="form" action="{{ route('bill_receives.store') }}" method="post">
 	        {{ csrf_field() }}
+          <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group form-group-default">
+              <label>Categoria</label>
+              <select class="full-width" data-placeholder="Selecione a Categoria" data-init-plugin="select2" name="category_id" id="category_id" required>
+                <option value="">Selecione</option>
+                @foreach($categories as $category)
+                  <option value="{{$category->id}}">{{$category->name}}</option>
+                @endforeach
+              </select>
+            </div>
+            @if ($errors->has('category_id'))
+                  <label id="position-error" class="error" for="position">{{ $errors->first('category_id') }}</label>
+              @endif
+          </div>
+        </div>
 	       <div class="row">
 	        <div class="col-sm-6">
 	          <div class="form-group form-group-default">
@@ -68,6 +84,21 @@
             </div>
             @if ($errors->has('value'))
                   <label id="position-error" class="error" for="position">{{ $errors->first('value') }}</label>
+              @endif
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group form-group-default">
+              <label>Status</label>
+              <select class="full-width" data-placeholder="Selecione a Status" data-init-plugin="select2" name="status" id="status" required>
+                <option value="">Selecione</option>
+                <option value="1">Recebido</option>
+                <option value="0">Não Recebido</option>
+              </select>
+            </div>
+            @if ($errors->has('status'))
+                  <label id="position-error" class="error" for="position">{{ $errors->first('status') }}</label>
               @endif
           </div>
         </div>

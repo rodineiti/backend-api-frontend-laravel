@@ -46,7 +46,7 @@
               <select class="full-width" data-placeholder="Selecione a Categoria" data-init-plugin="select2" name="category_id" id="category_id" required>
                 <option value="">Selecione</option>
                 @foreach($categories as $category)
-                  <option value="{{$category->id}}" {{ ($category->id === $bill_pay->category_id) ? 'selected' : '' }}>{{$category->name}}</option>
+                  <option value="{{$category->id}}" {{ ($category->id == $bill_pay->category_id) ? 'selected' : '' }}>{{$category->name}}</option>
                 @endforeach
               </select>
             </div>
@@ -85,6 +85,21 @@
             </div>
             @if ($errors->has('value'))
                   <label id="position-error" class="error" for="position">{{ $errors->first('value') }}</label>
+              @endif
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group form-group-default">
+              <label>Status</label>
+              <select class="full-width" data-placeholder="Selecione a Status" data-init-plugin="select2" name="status" id="status" required>
+                <option value="">Selecione</option>
+                <option value="1" {{ ($bill_pay->status == 1) ? 'selected' : '' }}>Pago</option>
+                <option value="0" {{ ($bill_pay->status == 0) ? 'selected' : '' }}>Não Pago</option>
+              </select>
+            </div>
+            @if ($errors->has('status'))
+                  <label id="position-error" class="error" for="position">{{ $errors->first('status') }}</label>
               @endif
           </div>
         </div>

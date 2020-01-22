@@ -28,7 +28,7 @@ class BillReceiveController extends Controller
 			return response()->json(['status' => 'error', 'message' => 'Opss. Usuário não foi encontrado, favor verifique se esta logado.']);
 		}
 
-		$bill_receives = $user->bill_receives()->get();
+		$bill_receives = $user->bill_receives()->with('category')->get();
 
 		return response()->json(['status' => 'success', 'data' => $bill_receives]);
     }
@@ -36,6 +36,7 @@ class BillReceiveController extends Controller
     public function store(Request $request)
     {
         $rules = [
+            'category_id' => 'required',
             'date_launch' => 'required|date',
             'name' => 'required|min:3|max:255',
             'value' => 'required|numeric',
@@ -83,9 +84,11 @@ class BillReceiveController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
+            'category_id' => 'required',
             'date_launch' => 'required|date',
             'name' => 'required|min:3|max:255',
-            'value' => 'required|numeric'
+            'value' => 'required|numeric',
+            'status' => 'required'
         ];
 
         $validator = \Validator::make($request->all(), $rules);

@@ -68,20 +68,25 @@
   </div>
   <!-- END CONTAINER FLUID -->
 
-  @if($categories)
+  @if($categoriesPay || $categoriesReceive)
   <!-- START CONTAINER FLUID -->
   <div class="container-fluid container-fixed-lg">
     
     <div class="row">
         <div class="panel panel-primary">
             <div class="row">
-              <div class="col-sm-3 text-center">
-              </div>
               <div class="col-sm-6 text-center">
-                <canvas id="myChart" width="400" height="200"></canvas>
-              </div>
-              <div class="col-sm-3 text-center">
-              </div>
+                  <fieldset>
+                    <legend>Pagamentos Pagos</legend>
+                    <canvas id="billPay" width="400" height="200"></canvas>
+                  </fieldset>
+                </div>
+                <div class="col-sm-6 text-center">
+                  <fieldset>
+                    <legend>Pagamentos Recebidos</legend>
+                    <canvas id="billReceive" width="400" height="200"></canvas>
+                  </fieldset>
+                </div>
             </div>
         </div>
     </div>
@@ -113,37 +118,76 @@ $(function()
       var b = Math.floor(Math.random() * 255);
       return "rgb(" + r + "," + g + "," + b + ")";
   }
-  var ctx = document.getElementById("myChart").getContext('2d');
-  var total = <?php echo count($categories); ?>;
-  var myChart = new Chart(ctx, {
-      type: 'pie',
-      data: {
-          labels: [
-            <?php foreach ($categories as $value) {
-                  echo "'$value->name',";
-            } ?>
-          ],
-          datasets: [{
-              label: '# of Votes',
-              data: [
-                <?php foreach ($categories as $value) {
-                  echo $value->value . ",";
-                } ?>
-              ],
-              backgroundColor: poolColors(total),
-              borderWidth: 1
-          }]
-      },
-      options: {
-          scales: {
-              yAxes: [{
-                  ticks: {
-                      beginAtZero:true
-                  }
-              }]
-          }
-      }
-  });
+  function pay() {
+    var ctx = document.getElementById("billPay").getContext('2d');
+    var total = <?php echo count($categoriesPay); ?>;
+    var billPay = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: [
+              <?php foreach ($categoriesPay as $value) {
+                    echo "'$value->name',";
+              } ?>
+            ],
+            datasets: [{
+                label: '# of Votes',
+                data: [
+                  <?php foreach ($categoriesPay as $value) {
+                    echo $value->value . ",";
+                  } ?>
+                ],
+                backgroundColor: poolColors(total),
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            }
+        }
+    });
+  }
+
+  function receive() {
+    var ctx = document.getElementById("billReceive").getContext('2d');
+    var total = <?php echo count($categoriesReceive); ?>;
+    var billReceive = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: [
+              <?php foreach ($categoriesReceive as $value) {
+                    echo "'$value->name',";
+              } ?>
+            ],
+            datasets: [{
+                label: '# of Votes',
+                data: [
+                  <?php foreach ($categoriesReceive as $value) {
+                    echo $value->value . ",";
+                  } ?>
+                ],
+                backgroundColor: poolColors(total),
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            }
+        }
+    });
+  }
+
+  pay();
+  receive();
 });
 </script>
 @endsection

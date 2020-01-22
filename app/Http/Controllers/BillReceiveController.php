@@ -35,7 +35,8 @@ class BillReceiveController extends Controller
      */
     public function create()
     {
-        return view('bill_receives.create');
+        $categories = auth()->user()->categories()->get();
+        return view('bill_receives.create', compact('categories'));
     }
 
     /**
@@ -47,6 +48,7 @@ class BillReceiveController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
+            'category_id' => 'required',
             'date_launch' => 'required|date',
             'name' => 'required|min:3|max:255',
             'value' => 'required|numeric'
@@ -67,8 +69,9 @@ class BillReceiveController extends Controller
      */
     public function edit($id)
     {
+        $categories = auth()->user()->categories()->get();
         $bill_receive = auth()->user()->bill_receives()->findOrFail($id);
-        return view('bill_receives.edit')->with('bill_receive', $bill_receive);
+        return view('bill_receives.edit', compact('bill_receive','categories'));
     }
 
     /**
@@ -81,6 +84,7 @@ class BillReceiveController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
+            'category_id' => 'required',
             'date_launch' => 'required|date',
             'name' => 'required|min:3|max:255',
             'value' => 'required|numeric'
@@ -108,5 +112,23 @@ class BillReceiveController extends Controller
         Session::flash('success', 'Conta a receber deletada com sucesso');
 
         return redirect()->back();
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function toggle(Request $request)
+    {
+        $this->validate($request, [
+            "id" => "exists:bill_receives,id"
+        ]);
+
+        $bill_receive = auth()->user()->bill_receives()->findOrFail($request->id);
+        $bill_receive->update(['status' => !$bill_receive->status]);
+                
+        return response()->json(['status' => 'success', 'message' => 'Conta a receber atualizada com sucesso']);
     }
 }

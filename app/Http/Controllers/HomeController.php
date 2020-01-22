@@ -28,29 +28,36 @@ class HomeController extends Controller
         $dateEnd = date('Y-m-d', mktime(23, 59, 59, date('m'), date("t"), date('Y')));
 
         $billPays = auth()->user()->bill_pays()->selectRaw('bill_pays.*, categories.name as category_name')
-            ->leftJoin('categories', 'categories.id', '=', 'bill_pays.category_id')
+            ->join('categories', 'categories.id', '=', 'bill_pays.category_id')
             ->whereBetween('date_launch', [$dateStart, $dateEnd])
+            ->where('status', '1')
             ->get();
 
-        $billReceives = auth()->user()->bill_receives()->whereBetween('date_launch', [$dateStart, $dateEnd])
+        $billReceives = auth()->user()->bill_receives()->selectRaw('bill_receives.*, categories.name as category_name')
+            ->join('categories', 'categories.id', '=', 'bill_receives.category_id')
+            ->whereBetween('date_launch', [$dateStart, $dateEnd])
+            ->where('status', '1')
             ->get();
-
-        //Collection [0 => BillPay, 1 => BillPay..]
-        //Collection [0 => BillReceive,1 => BillReceive..]
-
-        $collection = new Collection(array_merge_recursive($billPays->toArray(), $billReceives->toArray()));
-        $statements = $collection->sortByDesc('date_launch');
 
         $total_pays = $billPays->sum('value');
         $total_receives = $billReceives->sum('value');
 
-        $categories = auth()->user()->categories()->selectRaw('categories.name, sum(value) as value')
-            ->leftJoin('bill_pays', 'bill_pays.category_id', '=', 'categories.id')
+        $categoriesPay = auth()->user()->categories()->selectRaw('categories.name, sum(value) as value')
+            ->join('bill_pays', 'bill_pays.category_id', '=', 'categories.id')
             ->whereBetween('date_launch', [$dateStart, $dateEnd])
             ->whereNotNull('bill_pays.category_id')
             ->groupBy('categories.name')
+            ->where('status', '1')
             ->get();
 
-        return view('home', compact('statements','total_pays','total_receives','categories','dateStart','dateEnd'));
+        $categoriesReceive = auth()->user()->categories()->selectRaw('categories.name, sum(value) as value')
+            ->join('bill_receives', 'bill_receives.category_id', '=', 'categories.id')
+            ->whereBetween('date_launch', [$dateStart, $dateEnd])
+            ->whereNotNull('bill_receives.category_id')
+            ->groupBy('categories.name')
+            ->where('status', '1')
+            ->get();
+
+        return view('home', compact('billPays','billReceives','total_pays','total_receives','categoriesPay','categoriesReceive','dateStart','dateEnd'));
     }
 }

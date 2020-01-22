@@ -43,6 +43,7 @@
               <th>Nome</th>
               <th>Valor</th>
               <th>Categoria</th>
+              <th>Status</th>
               <th>Editar</th>
               <th>Deletar</th>
             </tr>
@@ -62,6 +63,9 @@
                   </td>
                   <td class="v-align-middle">
                     <p>{{$bill_pay->category->name}}</p>
+                  </td>
+                  <td class="v-align-middle">
+                    <input type="checkbox" data-init-plugin="switchery" data-id="{{ $bill_pay->id }}" data-size="small" data-color="primary" {{$bill_pay->status == '1' ? "checked='checked'" : "" }} />
                   </td>
                   <td class="v-align-middle">
                     <a href="{{ route('bill_pays.edit', ['id' => $bill_pay->id]) }}" class="btn btn-success">
@@ -88,4 +92,35 @@
   <!-- END CONTAINER FLUID -->
 </div>
 <!-- END PAGE CONTENT -->
+@endsection
+
+@section('scripts')
+<script>
+$(function(){
+  $("#tableWithDynamicRows").on("change", "input[type=checkbox]", function() {
+    var id = $(this).data("id");
+
+    if (id) {
+      $.ajax({
+        url: "{{ route('bill_pays.toggle') }}",
+        data: {"_token": "{{ csrf_token() }}", "id": id},
+        type: "post",
+        dataType: "json",
+        success: function (response) {
+          if (response.status === 'success') {
+            $('body').pgNotification({
+              style: 'bar',
+              message: response.message,
+              position: 'top',
+              timeout: 3000,
+              type: 'success'
+          }).show();
+          }
+        }
+      });
+    }
+    
+  });
+});
+</script>
 @endsection

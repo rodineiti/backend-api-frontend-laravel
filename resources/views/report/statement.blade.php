@@ -68,7 +68,7 @@
   </div>
   <!-- END CONTAINER FLUID -->
   
-  @if($statements)
+  @if($billPays || $billReceives)
   <!-- START CONTAINER FLUID -->
   <div class="container-fluid container-fixed-lg">
     
@@ -97,17 +97,35 @@
                 </div>
                 <div class="col-md-8 col-md-offset-2">
                     <div class="list-group">
-                        @foreach($statements as $statement)
+                        @foreach($billPays as $bill)
                           
                           <a href="#" class="list-group-item">
                               <h4 class="list-group-item-heading">
-                                  <span class="glyphicon glyphicon-{{ (isset($statement['category_id'])) ? 'minus' : 'plus' }}">
-                                      {{ $statement['date_launch'] }} - {{ $statement['name'] }}
+                                  <span class="glyphicon glyphicon-minus">
+                                      {{ $bill->date_launch }} - {{ $bill->name }}
                                   </span>
                               </h4>
                               <h4 class="text-right">
-                                  <span class="label label-{{ (isset($statement['category_id'])) ? 'danger' : 'success' }}">
-                                     R$ {{ (isset($statement['category_id'])) ? '-' : '' }} {{ $statement['value'] }}
+                                  <span class="label label-danger">
+                                     R$ - {{ $bill->value }}
+                                  </span>
+                              </h4>
+                              <div class="clearfix"></div>
+                          </a>
+                        @endforeach
+                    </div>
+                    <div class="list-group">
+                        @foreach($billReceives as $receive)
+                          
+                          <a href="#" class="list-group-item">
+                              <h4 class="list-group-item-heading">
+                                  <span class="glyphicon glyphicon-plus">
+                                      {{ $receive->date_launch }} - {{ $receive->name }}
+                                  </span>
+                              </h4>
+                              <h4 class="text-right">
+                                  <span class="label label-success">
+                                     R$ + {{ $receive->value }}
                                   </span>
                               </h4>
                               <div class="clearfix"></div>

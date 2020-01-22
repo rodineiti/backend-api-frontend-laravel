@@ -107,11 +107,29 @@ class BillPayController extends Controller
      */
     public function destroy($id)
     {
-        $bill_pay = auth()->user()->bill_pays()->findOrFail($id);        
+        $bill_pay = auth()->user()->bill_pays()->findOrFail($id);
         $bill_pay->delete();
 
         Session::flash('success', 'Conta a pagar deletada com sucesso');
 
         return redirect()->back();
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function toggle(Request $request)
+    {
+        $this->validate($request, [
+            "id" => "exists:bill_pays,id"
+        ]);
+
+        $bill_pay = auth()->user()->bill_pays()->findOrFail($request->id);
+        $bill_pay->update(['status' => !$bill_pay->status]);
+                
+        return response()->json(['status' => 'success', 'message' => 'Conta a pagar atualizada com sucesso']);
     }
 }
