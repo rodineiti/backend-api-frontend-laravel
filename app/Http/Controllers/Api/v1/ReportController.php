@@ -62,6 +62,9 @@ class ReportController extends Controller
             ->where($status)
             ->get();
 
+        $collection = new Collection(array_merge_recursive($billPays->toArray(), $billReceives->toArray()));
+        $statements = $collection->sortByDesc('date_launch');
+
         $total_pays = $billPays->sum('value');
         $total_receives = $billReceives->sum('value');
 
@@ -70,7 +73,7 @@ class ReportController extends Controller
         $data['total_pays'] = $total_pays;
         $data['total_receives'] = $total_receives;
 
-        return response()->json(['status' => 'success', 'data' => $data]);
+        return response()->json(['status' => 'success', 'data' => $data, 'statements' => $statements]);
     }
 
     public function sumChartsByPeriod(Request $request)

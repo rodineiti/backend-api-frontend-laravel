@@ -10,8 +10,15 @@ class BillPay extends Model
 
 	protected $casts = ['status' => 'boolean'];
 
+	protected $appends = ['type'];
+
     public function category()
     {
     	return $this->belongsTo('App\Category');
+    }
+
+    public function getTypeAttribute()
+    {
+    	return "out";
     }
 }

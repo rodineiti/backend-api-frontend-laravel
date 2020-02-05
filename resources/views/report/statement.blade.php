@@ -68,7 +68,7 @@
   </div>
   <!-- END CONTAINER FLUID -->
   
-  @if($billPays || $billReceives)
+  @if($statements)
   <!-- START CONTAINER FLUID -->
   <div class="container-fluid container-fixed-lg">
     
@@ -97,35 +97,16 @@
                 </div>
                 <div class="col-md-8 col-md-offset-2">
                     <div class="list-group">
-                        @foreach($billPays as $bill)
-                          
+                        @foreach($statements as $statement)
                           <a href="#" class="list-group-item">
                               <h4 class="list-group-item-heading">
-                                  <span class="glyphicon glyphicon-minus">
-                                      {{ $bill->date_launch }} - {{ $bill->name }}
+                                  <span class="glyphicon {{ $statement["type"] == "in" ? "glyphicon-plus" : "glyphicon-minus" }}">
+                                      {{ $statement["date_launch"] }} - {{ $statement["name"] }}
                                   </span>
                               </h4>
                               <h4 class="text-right">
-                                  <span class="label label-danger">
-                                     R$ - {{ $bill->value }}
-                                  </span>
-                              </h4>
-                              <div class="clearfix"></div>
-                          </a>
-                        @endforeach
-                    </div>
-                    <div class="list-group">
-                        @foreach($billReceives as $receive)
-                          
-                          <a href="#" class="list-group-item">
-                              <h4 class="list-group-item-heading">
-                                  <span class="glyphicon glyphicon-plus">
-                                      {{ $receive->date_launch }} - {{ $receive->name }}
-                                  </span>
-                              </h4>
-                              <h4 class="text-right">
-                                  <span class="label label-success">
-                                     R$ + {{ $receive->value }}
+                                  <span class="label {{ $statement["type"] == "in" ? "label-success" : "label-danger" }}">
+                                     R$ {{ $statement["type"] == "in" ? "+" : "-" }} {{ $statement["value"] }}
                                   </span>
                               </h4>
                               <div class="clearfix"></div>

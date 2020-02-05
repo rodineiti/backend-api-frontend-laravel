@@ -43,10 +43,13 @@ class ReportController extends Controller
             ->whereBetween('date_launch', [$dateStart, $dateEnd])
             ->get();
 
+        $collection = new Collection(array_merge_recursive($billPays->toArray(), $billReceives->toArray()));
+        $statements = $collection->sortByDesc('date_launch');
+
         $total_pays = $billPays->sum('value');
         $total_receives = $billReceives->sum('value');
 
-        return view('report.statement', compact('billPays','billReceives','total_pays','total_receives'));
+        return view('report.statement', compact('billPays','billReceives','total_pays','total_receives','statements'));
     }
 
     public function charts()
