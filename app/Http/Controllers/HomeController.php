@@ -24,7 +24,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $dateStart = date('Y-m-d', mktime(0, 0, 0, date('m') , 1 , date('Y')));
+        $dateStart = date('Y-m-d', mktime(0, 0, 0, date('m')-1 , 1 , date('Y')));
         $dateEnd = date('Y-m-d', mktime(23, 59, 59, date('m'), date("t"), date('Y')));
 
         $billPays = auth()->user()->bill_pays()->selectRaw('bill_pays.*, categories.name as category_name')
@@ -38,6 +38,9 @@ class HomeController extends Controller
             ->whereBetween('date_launch', [$dateStart, $dateEnd])
             ->where('status', '1')
             ->get();
+
+        $collection = new Collection(array_merge_recursive($billPays->toArray(), $billReceives->toArray()));
+        $statements = $collection->sortByDesc('date_launch');
 
         $total_pays = $billPays->sum('value');
         $total_receives = $billReceives->sum('value');
@@ -58,6 +61,6 @@ class HomeController extends Controller
             ->where('status', '1')
             ->get();
 
-        return view('home', compact('billPays','billReceives','total_pays','total_receives','categoriesPay','categoriesReceive','dateStart','dateEnd'));
+        return view('home', compact('billPays','billReceives','total_pays','total_receives','categoriesPay','categoriesReceive','dateStart','dateEnd','statements'));
     }
 }

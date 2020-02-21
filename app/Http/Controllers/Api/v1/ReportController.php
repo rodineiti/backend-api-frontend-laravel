@@ -72,8 +72,9 @@ class ReportController extends Controller
         $data['billReceives'] = $billReceives;
         $data['total_pays'] = $total_pays;
         $data['total_receives'] = $total_receives;
+        $data['statements'] = $statements;
 
-        return response()->json(['status' => 'success', 'data' => $data, 'statements' => $statements]);
+        return response()->json(['status' => 'success', 'data' => $data]);
     }
 
     public function sumChartsByPeriod(Request $request)
