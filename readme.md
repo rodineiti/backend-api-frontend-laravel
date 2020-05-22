@@ -1,3 +1,6 @@
+[![Build](https://img.shields.io/scrutinizer/build/g/rodineiti/backend-api-frontend-laravel.svg?style=flat-square)](https://scrutinizer-ci.com/g/rodineiti/backend-api-frontend-laravel)
+[![Quality Score](https://img.shields.io/scrutinizer/g/rodineiti/backend-api-frontend-laravel.svg?style=flat-square)](https://scrutinizer-ci.com/g/rodineiti/backend-api-frontend-laravel)
+
 <p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
 
 # Getting started
