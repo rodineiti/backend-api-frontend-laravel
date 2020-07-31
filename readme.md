@@ -51,4 +51,14 @@ Start the local development server
 
 You can now access the server at http://localhost:8000
 
+Admin login test
+
+    email: marquis90@example.org
+    password: secret
+
+User login test
+    
+    email: kara.walter@example.com
+    password: secret
+
 You can now access the server API at http://localhost:8000/api
